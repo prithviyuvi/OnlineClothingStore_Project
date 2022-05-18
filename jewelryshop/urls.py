@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('store.urls')),
+    url(r'^storelocator/', include('storelocator.urls')),
 ]
 
 # To display images

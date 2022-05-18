@@ -156,3 +156,10 @@ superuser:
  prithvi
 yprithvi21@gmail.com
 YPrithvi@2102
+
+
+
+https://django-storelocator.readthedocs.io/en/latest/installation.html#pip
+pip install django-storelocator
+pip install django-discover-runner
+pip install mock

@@ -1,7 +1,7 @@
 import django
 from django.contrib.auth.models import User
 from store.models import Address, Cart, Category, Order, Product
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404, HttpResponse
 from .forms import RegistrationForm, AddressForm
 from django.contrib import messages
 from django.views import View
@@ -12,6 +12,8 @@ import urllib
 import bs4 as bs
 import re
 import razorpay
+from django.views.decorators.csrf import csrf_exempt
+from jewelryshop.settings import RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY
 
 # Create your views here.
 
@@ -194,6 +196,12 @@ def checkout(request):
     return redirect('store:orders')
 
 
+
+@csrf_exempt
+def success(request):
+    return render(request, "success.html")
+
+
 @login_required
 def orders(request):
     all_orders = Order.objects.filter(user=request.user).order_by('-ordered_date')
@@ -228,7 +236,7 @@ def articles(request):
         list.append(item['src'])
     text.clear()
     # *****************  source2  ********************
-    source2 = urllib.request.urlopen('https://www.vogue.in/fashion').read()
+    source2 = urllib.request.urlopen('https://hmgroup.com/sustainability/circular-and-climate-positive/recycling/').read()
     soup2 = bs.BeautifulSoup(source2, 'lxml')
     text1 = []
     for paragraph in soup2.find_all('p'):
@@ -254,9 +262,92 @@ def articles(request):
 
     text2.clear()
 
+
     return render(request, 'store/articles.html',
                   {'text': tex, 'text2': tex1[:len(tex1) - 30], 'text3': tex2[2:len(tex2) - 20], 'list2': list[2],
                    'list3': list[3], 'list4': list[4], 'list5': list[5]})
+
+
+
+client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
+def index(request):
+    user = request.user
+    address_id = request.GET.get('address')
+
+    address = get_object_or_404(Address, id=address_id)
+    # Get all the products of User in Cart
+    cart = Cart.objects.filter(user=user)
+
+
+    order_amount = 50000
+    order_currency = 'INR'
+
+    payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, payment_capture=1))
+    payment_id = payment_order['id']
+    order_status = response_payment['status']
+    if order_status == 'created':
+        for c in cart:
+            # Saving all the products from Cart to Order
+            Order(user=user, address=address, product=c.product, quantity=c.quantity).save()
+            # And Deleting from Cart
+            c.delete()
+    context = {
+        'amount': {{amount}}, 'api_key':rzp_test_JbdMtn5pZ84MBr,
+    }
+
+
+    return redirect('store:orders')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
