@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load static %}
+<body style="background-color:#F5F5F5 ;">
+<br><br><br><br><br><br><br>
+
+
+  <div class="container d-flex justify-content-center">
+      <h4 class="navbar-text text-white">
+         <h3>Your Results for {{search}}</h3>
+  </h4>
+  </div>
+
+</nav>
+<div class="container" style="margin-bottom: 85px; background-color:white;" >
+  <div class="row">
+   <div class="col-xs-12 col-sm-6">
+      <h4 class="panel panel-blue text-center" >Google</h4>
+        <div class="justify-content-center">
+          {% for i,j in google %}
+         <a href="{{ i }}" class="btn mt-3 w-100">{{ j }}</a><br><br>
+        {% endfor %}
+        </div>
+    </div>
+
+  <div class="col-xs-12 col-sm-6">
+    <h4  class="panel panel-blue text-center" >Bing</h4>
+    <div class="justify-content-center">
+        {% for i,j in bing %}
+       <a href="{{ i }}" class="btn mt-3 w-100">{{ j }}</a><br><br>
+      {% endfor %}
+      </div>
+  </div>
+
+  <!-- <div class="col-xs-12 col-sm-6">
+    <h4  class="panel panel-blue text-center" >Givewater</h4>
+    <div class="justify-content-center">
+        {% for i,j in givewater %}
+       <a href="{{ i }}" class="btn mt-3 w-100">{{ j }}</a><br><br>
+      {% endfor %}
+      </div>
+    </div>
+  </div> -->
+     <div class="col-xs-12 col-sm-6">
+      <h4  class="panel panel-blue text-center" >DuckDuckGo</h4>
+      <div class="justify-content-center">
+          {% for i,j in duck %}
+         <a href="{{ i }}" class="btn mt-3 w-100">{{ j }}</a><br><br>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

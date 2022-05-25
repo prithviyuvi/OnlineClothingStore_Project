@@ -18,8 +18,10 @@ urlpatterns = [
     path('checkout/', views.checkout, name="checkout"),
     path('orders/', views.orders, name="orders"),
     path('articles/',views.articles, name='articles'),
-    #path('home_razor', views.home_razor, name="home_razor"),
-    path('success', views.success, name='success'),
+    path('storelocator/',views.storelocator, name='storelocator'),
+    path('searchhome', views.searchhome,name='searchhome'),
+
+
 
 
     #URL for Products

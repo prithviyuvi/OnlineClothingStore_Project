@@ -1,0 +1,181 @@
+<!--https://www.youtube.com/watch?v=YwIu2Rd0VKM-->
+
+
+
+<!--store locator code -> https://simplestepscode.com/store-locator-api-tutorial/ -->
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block content %}
+
+
+
+
+<html>
+<head>
+<title>map test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style type="text/css">
+
+/* map needs width and height to appear */
+#map{
+	width: 900px;
+	max-width: 100%;
+	height: 500px;
+}
+
+</style>
+    <style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+</head>
+<center>
+<body><br>
+<div class="container">
+ <section class="pt-5">
+          <header class="text-center">
+            <p class="small text-muted small text-uppercase mb-1">Sustainability</p>
+            <h2 class="h5 text-uppercase mb-4">We’re commited to Leading the Change to a better fashion future. This starts with improving sustainability performance in our own value chain and demonstrating the resilience of sustainable business.
+</h2>
+          </header>
+  <br><hr>
+We amplify our positive impact by working with others — showing the potential for innovation and dialogue to speed transformation. Leading the Change is a mindset. It influences everything we do and contributes to achieving our ambition to become fully circular and climate positive, while being a fair and equal company.
+<br>
+
+We focus on three key areas that maximise our impact:<br>
+Scale innovation. New materials, recycling technologies and  business models that promote circularity, improve resource use and enhance customers’ experience are needed to transform our business and the fashion industry. We identify, test and scale new solutions. ​
+Promote transparency. Communicating openly and honestly about our business is vital for building meaningful relationships with colleagues, customers, investors, and others. Transparency alone does not improve sustainability performance, but creates accountability and comparability, pushing us to improve and encouraging others in our industry to do the same.​
+Engage and partner for industrywide progress. An important part of our approach is openly engaging with others within and outside our industry. Engaging with diverse perspectives challenges us to do better, accelerates innovation and supports our transparency efforts. Partnerships help us progress towards our sustainability ambitions faster than we could alone and have a positive impact beyond our own value chain.​
+     </p><br>
+     <p style="text-align: left"><h2 class="h5 text-uppercase mb-4">Recycling and the circular economy </h2><br>
+In a circular fashion industry recycling is only the final loop, not the entire solution. First, we need to keep garments and textiles in use for as long as possible. We are changing the way we design our products and introducing new circular business models to extend the lifetime of our products and materials. We always advocate recirculating textiles through repair, reuse and remake before recycling.
+<div class="row">
+  <div class="column" >
+    <h2><b>Useful definitions from Ellen MacArthur Foundation:</b></h2>
+    <p><b>Repair:</b> Operation by which a faulty or broken product or component is returned to a usable state.
+
+<br><b>Reuse:</b>Operation by which a product or component is used repeatedly and for long periods of time, for its original purpose, without being significantly modified, remade, or recycled.
+
+<br><b>Remake: </b>Operation by which a product is created from existing products or components. This operation can include disassembling, re-dyeing, restyling, and other processes to improve emotional and physical durability.
+
+     <br><b>Recycle:</b> The process of reducing a product back to its basic material level, reprocessing those materials, and using them in new products, components or materials.</p>
+ </p>
+  </div>
+  <div class="column">
+
+    <p style=" background-image: url('jewelryshop/rrr.png');"></p>
+  </div>
+</div>
+
+
+<br><br>
+
+
+     </section><br><hr><br>
+ <header class="text-center">
+            <p class="small text-muted small text-uppercase mb-1">Store Locator</p>
+            <h2 class="h5 text-uppercase mb-4">Find a store - neayby your location for Recycle your old garments to new garments !!</h2>
+          </header>
+</div>
+
+<!-- this div will hold your map -->
+<div id="map"></div>
+
+<!-- this div will hold your store info -->
+<div id="info_div"></div>
+
+<script>
+function initMap() {
+	var myMapCenter = {lat: 10.99619909390842, lng:  76.92122681485225};
+
+	// Create a map object and specify the DOM element for display.
+	var map = new google.maps.Map(document.getElementById('map'), {
+		center: myMapCenter,
+		zoom: 11
+	});
+
+
+	function markStore(storeInfo){
+
+		// Create a marker and set its position.
+		var marker = new google.maps.Marker({
+			map: map,
+			position: storeInfo.location,
+			title: storeInfo.name
+		});
+
+		// show store info when marker is clicked
+		marker.addListener('click', function(){
+			showStoreInfo(storeInfo);
+		});
+	}
+
+	// show store info in text box
+	function showStoreInfo(storeInfo){
+		var info_div = document.getElementById('info_div');
+		info_div.innerHTML = 'Store name: '
+			+ storeInfo.name
+			+ '<br>Hours: ' + storeInfo.hours;
+	}
+
+	var stores = [
+		{
+			name: 'Online Clothing store 1',
+			location: {lat: 11.000376206078712, lng: 76.9779685816391},
+			hours: '8AM to 10PM'
+		},
+		{
+			name: 'Online Clothing store 2',
+			location: {lat: 11.00946509277314, lng: 76.95086880888368},
+			hours: '9AM to 9PM'
+		},
+		{
+			name: 'Online Clothing store 3',
+			location: {lat: 11.074003650581137, lng: 76.99664583177594},
+			hours: '10AM to 12PM'
+		},
+		{
+			name: 'Online Clothing store 4',
+			location: {lat: 11.000010083163227, lng: 77.03350183748736},
+			hours: '8AM to 10PM'
+		},
+		{
+			name: 'Online Clothing store 5',
+			location: {lat: 11.077329508646171, lng: 76.93540197604216},
+			hours: '9AM to 11PM'
+		}
+	];
+
+	stores.forEach(function(store){
+		markStore(store);
+	});
+
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLrtDRjyWavmpgb_6Sqr3o3j_B9Y8ZrBg&callback=initMap" async defer></script>
+</body>
+    </center><br><br>
+</html>
+
+{% endblock content %}

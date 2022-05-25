@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>swal("Discover the new you !!! ");</script>
+
+<body  style="background-image: url({% static 'IMAGES/image3.jpg' %}) ; background-size:100% ;">
+ <center><h1>Search Anything.....But DO YOU KNOW???</h1>
+
+
+ <div class="container">
+    <div class="center">
+<span id="typed" style="font-size:35px;"></span>
+    </div>
+</div>
+<div class="wrapper" >
+
+    <form action="{% url 'store/searchresults' %}" method="post">
+        {% csrf_token %}
+
+    <input type="text" placeholder="Search..." name="search">
+    <div class="search"></div>
+    </form>
+</div>
+</body>
+{% endblock %}

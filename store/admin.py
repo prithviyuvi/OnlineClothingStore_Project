@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Address, Category, Product, Cart, Order, RazorPay
+from .models import Address, Category, Product, Cart, Order
 
 # Register your models here.
 class AddressAdmin(admin.ModelAdmin):
@@ -42,14 +42,9 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('user', 'product')
 
 
-class RazorPayAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'price', 'payment_id', 'paid')
-    list_per_page = 20
-    search_fields = ('user', 'product')
 
 admin.site.register(Address, AddressAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart, CartAdmin)
 admin.site.register(Order, OrderAdmin)
-admin.site.register(RazorPay, RazorPayAdmin)

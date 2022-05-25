@@ -25,11 +25,14 @@
                   <!-- Link--><a class="nav-link" href='articles'>Blog</a>
                 </li>
                 <li class="nav-item">
-                  <!-- Link--><a class="nav-link" href="{% url 'store:home' %}">Recycle Old Products</a>
+                  <!-- Link--><a class="nav-link" href="{% url 'store:storelocator' %}">Sustainability</a>
                 </li>
                 <li class="nav-item">
-                  <!-- Link--><a class="nav-link" href="{% url 'store:home' %}">Style Recommendation</a>
+                  <!-- Link--><a class="nav-link" href="{% url 'store:searchhome' %}">search</a>
                 </li>
+                <!--<li class="nav-item">
+                  <a class="nav-link" href="{% url 'store:home' %}">Style Recommendation</a>
+                </li>-->
 
               </ul>
               <ul class="navbar-nav ml-auto"> 
@@ -46,6 +49,7 @@
                       <a class="dropdown-item border-0 transition-link" href="{% url 'store:cart' %}">Cart</a>
                       <a class="dropdown-item border-0 transition-link" href="{% url 'store:orders' %}">Orders</a>
                       <a class="dropdown-item border-0 transition-link" href="{% url 'store:password-change' %}">Change Password</a>
+
 
                     <hr>
                     <a class="dropdown-item border-0 transition-link" href="{% url 'store:logout' %}">Log Out</a>

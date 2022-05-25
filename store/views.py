@@ -14,6 +14,7 @@ import re
 import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from jewelryshop.settings import RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY
+from .search import google, duck, bing, givewater
 
 # Create your views here.
 
@@ -271,41 +272,67 @@ def articles(request):
 
 client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
 def index(request):
-    user = request.user
-    address_id = request.GET.get('address')
-
-    address = get_object_or_404(Address, id=address_id)
-    # Get all the products of User in Cart
-    cart = Cart.objects.filter(user=user)
-
-
+    """amount = decimal.Decimal(0)
+    shipping_amount = decimal.Decimal(10)
+    # using list comprehension to calculate total amount based on quantity and shipping
+    cp = [p for p in Cart.objects.all() if p.user == user]
+    if cp:
+        for p in cp:
+            temp_amount = (p.quantity * p.product.price)
+            amount += temp_amount
+    context = {
+        'cart_products': cart_products,
+        'amount': amount,
+        'shipping_amount': shipping_amount,
+        'total_amount': amount + shipping_amount,
+        'addresses': addresses,
+    }"""
     order_amount = 50000
     order_currency = 'INR'
-
-    payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, payment_capture=1))
+    payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, payment_capture='1'))
     payment_id = payment_order['id']
-    order_status = response_payment['status']
-    if order_status == 'created':
-        for c in cart:
-            # Saving all the products from Cart to Order
-            Order(user=user, address=address, product=c.product, quantity=c.quantity).save()
-            # And Deleting from Cart
-            c.delete()
     context = {
-        'amount': {{amount}}, 'api_key':rzp_test_JbdMtn5pZ84MBr,
+        'amount': {{amount}}, 'api_key':rzp_test_JbdMtn5pZ84MBr
     }
-
-
     return redirect('store:orders')
 
+import time
+import googlemaps
+import pandas as pd
+
+def storelocator(request):
+
+
+    return render(request,'store/storelocator.html')
 
 
 
+#---------search enginee------------------------
 
 
+def searchhome(request):
+    #return render(request, 'store/serachhome.html')
+    return render(request, 'store/serachhome.html')
 
 
+def searchresults(request):
+    if request.method == "POST":
+        result = request.POST.get('search')
+        google_link, google_text = google(result)
+        google_data = zip(google_link, google_text)
+        duck_link, duck_text = duck(result)
+        duck_data = zip(duck_link, duck_text)
+        bing_link, bing_text = bing(result)
+        bing_data = zip(bing_link, bing_text)
+        givewater_link, givewater_text = givewater(result)
+        givewater_data = zip(givewater_link, givewater_text)
 
+        if result == '':
+            return redirect('searchhome')
+        else:
+            return render(request, 'store/searchresults.html',
+                          {'search': result, 'google': google_data, 'duck': duck_data, 'bing': bing_data,
+                           'givewater': givewater_data})
 
 
 
