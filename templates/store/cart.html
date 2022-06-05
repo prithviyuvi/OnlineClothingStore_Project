@@ -100,7 +100,8 @@
                     <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Subtotal</strong><span class="text-muted small">₹{{amount|intcomma}}</span></li>
                     <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Shipping Charge</strong><span class="text-muted small">+ ₹{{shipping_amount}}</span></li>
                     <li class="border-bottom my-2"></li>
-                    <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>₹{{total_amount|intcomma}}</span></li>
+                    <li  class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>₹{{total_amount|intcomma}}</span></li>
+                     <input type="hidden" id="total-cost" value="{{total_amount}}">
                     <li>
 
                       {% comment %} <form action="#">
@@ -133,10 +134,13 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+ var totalCost=document.querySelector('#total-cost').value
 var options = {
     "key": "rzp_test_JbdMtn5pZ84MBr", // Enter the Key ID generated from the Dashboard
     "name": "Online Clothing Store",
-    "description": "Test Transaction",
+    "description": "Payment gateway",
+    "amount":Number(totalCost*100),
+    "currency":"INR",
     "image": "https://example.com/your_logo",
     "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": function (response){
@@ -146,7 +150,7 @@ var options = {
     },
     "prefill": {
         "name": "{{user}}",
-        "email": "{{email_user}}",
+        "email": "{{mail}}",
         "contact": "8870938966"
     },
     "notes": {
@@ -171,7 +175,56 @@ document.getElementById('rzp-button1').onclick = function(e){
     e.preventDefault();
 }
 </script>
+
+
 <!--youtube link for razorpay https://www.youtube.com/watch?v=xuN1RkETRDw  -->
+                   <!-- <button type="button" id="rzp-button1" class="btn btn-primary">Pay</button>-->
+                    <!--<button type="submit" id="rzp-button1" class="btn btn-outline-success btn-block">Pay with RazorPay</button>
+ <script src="https://checkout.razorpay.com/v1/checkout.js"></script>-->
+<script>
+    var totalCost=document.querySelector('#total-cost').value
+var options = {
+    "key": "rzp_test_JbdMtn5pZ84MBr", // Enter the Key ID generated from the Dashboard
+    "name": "Online Clothing Store",
+    "description": "Payment gateway",
+    "amount":Number(totalCost*100),
+    "currency":"INR",
+    "image": "https://example.com/your_logo",
+    "payment_id": "{{payment_id}}",
+    "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+
+        alert("success")
+         })
+
+    },
+    "prefill": {
+        "name": "{{user}}",
+        "email": "{{mail}}",
+        "contact": "8870938966"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
 
 
                     {% comment %} For Cash on Delivery {% endcomment %}

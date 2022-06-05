@@ -19,7 +19,9 @@ urlpatterns = [
     path('orders/', views.orders, name="orders"),
     path('articles/',views.articles, name='articles'),
     path('storelocator/',views.storelocator, name='storelocator'),
-    path('searchhome', views.searchhome,name='searchhome'),
+    path('searchhome/', views.searchhome, name='searchhome'),
+    path('searchresults/', views.searchresults, name='searchresults'),
+    path('proceed-to-pay/', views.razorpaycheck, name="proceed-to-pay"),
 
 
 
@@ -47,7 +49,4 @@ urlpatterns = [
     path('accounts/password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='account/password_reset_confirm.html', form_class=SetPasswordForm, success_url='/accounts/password-reset-complete/'), name="password_reset_confirm"), # Passing Success URL to Override default URL
     path('accounts/password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='account/password_reset_complete.html'), name="password_reset_complete"),
 
-
-
-    
 ]

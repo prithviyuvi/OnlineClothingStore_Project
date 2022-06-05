@@ -136,7 +136,7 @@ def cart(request):
         for p in cp:
             temp_amount = (p.quantity * p.product.price)
             amount += temp_amount
-
+    total_amount = amount + shipping_amount
     # Customer Addresses
     addresses = Address.objects.filter(user=user)
 
@@ -147,6 +147,9 @@ def cart(request):
         'total_amount': amount + shipping_amount,
         'addresses': addresses,
     }
+    global val
+    def val():
+        return total_amount
     return render(request, 'store/cart.html', context)
 
 
@@ -269,10 +272,10 @@ def articles(request):
                    'list3': list[3], 'list4': list[4], 'list5': list[5]})
 
 
-
+"""
 client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
 def index(request):
-    """amount = decimal.Decimal(0)
+    amount = decimal.Decimal(0)
     shipping_amount = decimal.Decimal(10)
     # using list comprehension to calculate total amount based on quantity and shipping
     cp = [p for p in Cart.objects.all() if p.user == user]
@@ -286,7 +289,7 @@ def index(request):
         'shipping_amount': shipping_amount,
         'total_amount': amount + shipping_amount,
         'addresses': addresses,
-    }"""
+    }
     order_amount = 50000
     order_currency = 'INR'
     payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, payment_capture='1'))
@@ -294,7 +297,24 @@ def index(request):
     context = {
         'amount': {{amount}}, 'api_key':rzp_test_JbdMtn5pZ84MBr
     }
-    return redirect('store:orders')
+    return redirect('store:orders')"""
+
+
+client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
+def razorpaycheck(request):
+    tot_cost = val()
+    order_amount = 50000
+    order_currency = 'INR'
+    payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, payment_capture=1))
+    payment_id = payment_order['id']
+    context = {
+        'amount': {{tot_cost}}, 'api_key':rzp_test_JbdMtn5pZ84MBr, 'order_id':payment_order_id
+    }
+    return redirect('store:success')
+
+def success(reuqest):
+    return render(request, 'orders.html')
+
 
 import time
 import googlemaps
@@ -311,8 +331,7 @@ def storelocator(request):
 
 
 def searchhome(request):
-    #return render(request, 'store/serachhome.html')
-    return render(request, 'store/serachhome.html')
+    return render(request, 'serachhome.html')
 
 
 def searchresults(request):
@@ -330,7 +349,7 @@ def searchresults(request):
         if result == '':
             return redirect('searchhome')
         else:
-            return render(request, 'store/searchresults.html',
+            return render(request, 'searchresults.html',
                           {'search': result, 'google': google_data, 'duck': duck_data, 'bing': bing_data,
                            'givewater': givewater_data})
 
